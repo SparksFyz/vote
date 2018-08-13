@@ -1,20 +1,23 @@
 <template>
-  <div class="vote-cell">
+  <div class="vote-cell" @click="toDetail">
     <div class="vote-cell-order">
-      <div class="order">{{brand.order}}号</div>
+      <div class="order">{{brand.projectId}}号</div>
       <div class="trangle-left"></div>
     </div>
     <div class="vote-cell-info">
       <div class="photo">
-        <img src="../assets/anfa.jpg" :alt="brand.name"></div>
-      <div class="title">{{brand.name}}</div>
-      <div class="vote-num"><span>{{brand.vote}}</span>票</div>
+        <img :src="'http://47.104.228.159:8080/Wechat/user' + brand.pngUrl" :alt="brand.projectName"></div>
+      <div class="title">{{brand.projectName}}</div>
+      <div class="vote-num"><span>{{brand.voteCount}}</span>票</div>
       <mt-button size="small" type="danger">投票</mt-button>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  getProjects,URL
+} from '@/http'
 export default {
   name: 'VoteCell',
   props: {
@@ -29,6 +32,15 @@ export default {
   methods: {
     vote () {
 
+    },
+
+    toDetail() {
+      this.$router.push({
+        name: 'brand',
+        params: {
+          brand: this.brand
+        }
+      })
     }
   }
 }

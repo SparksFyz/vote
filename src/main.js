@@ -12,6 +12,7 @@ import 'mint-ui/lib/style.css'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import vmodal from 'vue-js-modal'
 
 import 'reset-css'
 
@@ -20,6 +21,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueScroller)
 Vue.use(Mint)
+Vue.use(vmodal)
 
 new Vue({
   router,

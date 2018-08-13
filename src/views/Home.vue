@@ -11,12 +11,19 @@
       <div class="title">评论列表</div>
       <div class="notice">数据每十分钟定时更新一次</div>
     </div>
+    <modal name="modal" width="90%">
+      <img src="../assets/code.jpg" alt="">
+    </modal>
   </div>
 </template>
 
 <script>
+
 // @ is an alias to /src
 import VoteCell from '@/components/VoteCell.vue'
+import {
+  getProjects,URL
+} from '@/http'
 
 export default {
   name: 'home',
@@ -26,31 +33,28 @@ export default {
   data () {
     return {
       brands: [
-        {
-          order: 1,
-          image: '../assets/anfa.jpg',
-          name: '品牌1',
-          vote: '12345'
-        },
-        {
-          order: 2,
-          image: '../assets/anfa.jpg',
-          name: '品牌3',
-          vote: '12345'
-        },
-        {
-          order: 3,
-          image: '../assets/anfa.jpg',
-          name: '品牌2',
-          vote: '12345'
-        }
       ],
-      introduction: ''
+      introduction: '',
     }
-  }
+  },
+  methods: {
+    fetchProjects() {
+      getProjects().then(res => {
+        console.log(res)
+        this.brands = res.data.data
+      })
+    },
+    showModal() {
+      this.$modal.show('modal')
+    }
+  },
+  mounted() {
+    this.showModal()
+    this.fetchProjects()
+  },
 }
 </script>
-<style lang="sass">
+<style lang="sass" scoped>
   .home
     display: flex
     flex-wrap: wrap
@@ -99,3 +103,17 @@ export default {
       margin: 10px 0px
       color: #ccc
 </style>
+
+<style lang="sass">
+  .v--modal-box
+    display: flex
+    align-items: center
+    justify-content: center
+    transition: width 2s, height 2s, transform 2s
+
+  .fade-enter-active, .fade-leave-active 
+    transition: opacity .5s
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ 
+    opacity: 0
+</style>
+

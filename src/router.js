@@ -30,6 +30,11 @@ export default new Router({
       path: '/user',
       name: 'user',
       component: () => import(/* webpackChunkName: "about" */ './views/User.vue')
+    },
+    {
+      path: '/brand',
+      name: 'brand',
+      component: () => import(/* webpackChunkName: "about" */ './views/Brand.vue')
     }
   ]
 })
