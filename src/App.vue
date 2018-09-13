@@ -107,15 +107,21 @@ export default {
     const authUrl = getCode()
 
     if (!openid && !code) {
+      // 前端没有openId和code, 跳转至授权页面，
+      // 点击确认授权之后会跳转回来， 上面的代码再执行一遍, code在url上，不会再进这个if
       window.location.href = authUrl
     } else {
       if (code) {
+        // 在http.js里面写个post方法 把code传给后端，后端返回用户信息和openId
+        // 拿到openid之后缓存在前端 storage.setItem('vote-openid', res.openId)
         window.alert(`发送code给后端 ${code}`)
       } else {
         getProfile(openid).then(res => {
           console.log(res)
           window.alert('auth')
           window.alert(JSON.stringify(res))
+
+          // 这里需要判断成功还是失败， 失败就是过期，需要清除前端openid缓存,然后reload页面，自动去走授权了
         })
       }
     }
