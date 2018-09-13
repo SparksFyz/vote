@@ -94,6 +94,7 @@ export default {
     //     opened.opener = null
     //     opened.close()
     // }
+
     const storage = window.localStorage
     let code = ''
 
@@ -101,7 +102,6 @@ export default {
       code = window.location.search.split('=')[1]
     }
     
-
     
     const openid = storage.getItem("vote-openid")
     const authUrl = getCode()
@@ -110,7 +110,7 @@ export default {
       window.location.href = authUrl
     } else {
       if (code) {
-        window.alert(`发送code ${code}`)
+        window.alert(`发送code给后端 ${code}`)
       } else {
         getProfile(openid).then(res => {
           console.log(res)
