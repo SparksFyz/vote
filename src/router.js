@@ -6,12 +6,21 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
+  base: '/Wechat/',
   routes: [
     {
       path: '/',
+      redirect: 'home'
+    },
+    {
+      path: '/Wechat',
+      redirect: 'home'
+    },
+    {
+      path: '/home',
       name: 'home',
-      component: Home
+      component: () => import(/* webpackChunkName: "about" */ './views/Home.vue')
     },
     {
       path: '/rank',

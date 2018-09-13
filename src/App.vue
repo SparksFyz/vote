@@ -2,7 +2,7 @@
   <div id="app">
     <div v-show="showBanner">
       <div class="img-box">
-        <img src="./assets/title.jpg">
+        <img src="./assets/share.png">
       </div>
       <div class="info-box">
         <div>
@@ -58,6 +58,13 @@
 </template>
 
 <script>
+import {
+  getProjects,
+  getCode,
+  getProfile
+} from '@/http'
+import { longStackSupport } from 'q';
+
 export default {
   data () {
     return {
@@ -79,6 +86,40 @@ export default {
   },
 
   mounted () {
+    // const useragent = navigator.userAgent
+    // if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+    //     alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！')
+    //     // 以下代码是用javascript强行关闭当前页面
+    //     const opened = window.open('about:blank', '_self')
+    //     opened.opener = null
+    //     opened.close()
+    // }
+    const storage = window.localStorage
+    let code = ''
+
+    if (window.location.search) {
+      code = window.location.search.split('=')[1]
+    }
+    
+
+    
+    const openid = storage.getItem("vote-openid")
+    const authUrl = getCode()
+
+    if (!openid && !code) {
+      window.location.href = authUrl
+    } else {
+      if (code) {
+        window.alert(`发送code ${code}`)
+      } else {
+        getProfile(openid).then(res => {
+          console.log(res)
+          window.alert('auth')
+          window.alert(JSON.stringify(res))
+        })
+      }
+    }
+    
   }
 }
 </script>

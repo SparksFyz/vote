@@ -6,7 +6,7 @@
     </div>
     <div class="vote-cell-info">
       <div class="photo">
-        <img :src="'http://47.104.228.159:8080/Wechat/user' + brand.pngUrl" :alt="brand.projectName"></div>
+        <img :src="'http://huwaicanju.com/Wechat/user' + brand.pngUrl" :alt="brand.projectName"></div>
       <div class="title">{{brand.projectName}}</div>
       <div class="vote-num"><span>{{brand.voteCount}}</span>票</div>
       <mt-button size="small" type="danger">投票</mt-button>
@@ -16,7 +16,7 @@
 
 <script>
 import {
-  getProjects,URL
+  getProjects,
 } from '@/http'
 export default {
   name: 'VoteCell',
