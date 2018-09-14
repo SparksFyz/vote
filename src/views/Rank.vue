@@ -79,7 +79,7 @@ export default {
         wx.onMenuShareAppMessage({
           title: '2018最具影响力直销品牌评选',
           desc: '活动火爆进行中， 家人们赶紧投上宝贵的一票！',
-          link: link,
+          link: 'http://huwaicanju.com',
           imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
           success: function () {
             // window.alert('分享成功')
@@ -91,7 +91,7 @@ export default {
 
         wx.onMenuShareTimeline({
           title: '2018最具影响力直销品牌评选',
-          link: link,
+          link: 'http://huwaicanju.com',
           imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
           success: function () {
           },

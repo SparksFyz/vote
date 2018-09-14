@@ -18,6 +18,8 @@ export function getCommentsByProjectId(id) {
 }
 
 export function getProjectById(id) {
+  id = Number(id)
+
   return axios.post(`${URL}/project/${id}`)
 }
 
@@ -31,11 +33,24 @@ export function getProfile(openid) {
   return axios.post(`${URL}/wechatUser/${openid}`)
 }
 
-export function getCode() {
+export function getCode(router, brandId) {
   const wexinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?'
   const appId = 'wx59e7e11099c2c50f'
   const redirect_uri = 'http://huwaicanju.com'
-  return `${wexinUrl}appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo#wechat_redirect`
+  let url = `${wexinUrl}appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo#wechat_redirect`
+  // #wechat_redirect
 
+  let state = ''
+  if (router && brandId) {
+    state = `${router}^^${brandId}`
+  } else {
+    if (router) {
+      state = router
+    }
+  }
+  if (state) {
+    url = `${wexinUrl}appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=${state}#wechat_redirect`
+  }
+  return url
   // return axios.get(`${wexinUrl}appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo#wechat_redirect`)
 }

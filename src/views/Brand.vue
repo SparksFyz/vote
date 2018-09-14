@@ -21,7 +21,8 @@
 <script>
   import wx from 'weixin-js-sdk'
   import {
-    getSignature
+    getSignature,
+    getProjectById
   } from '@/http'
 
   export default {
@@ -34,6 +35,7 @@
     methods: {
       initWx(config) {
         const title = `支持${this.brand.projectName}，转发投票！2018最具影响力直销品牌评选`
+        const brandId = this.brand.projectId
 
         wx.config({
             debug: false,
@@ -52,19 +54,19 @@
           wx.onMenuShareAppMessage({
             title: title,
             desc: '活动火爆进行中， 家人们赶紧投上宝贵的一票！',
-            link: link,
+            link: `http://huwaicanju.com/We1chat/brand?router=brand&brandId=${brandId}`,
             imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
             success: function () {
               // window.alert('分享成功')
             },
             fail: function (res) {
-              alert(JSON.stringify(res))
+              // alert(JSON.stringify(res))
             }
           })
 
           wx.onMenuShareTimeline({
             title: title,
-            link: link,
+            link: `http://huwaicanju.com/We1chat/brand?router=brand&brandId=${brandId}`,
             imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
             success: function () {
             },
@@ -77,7 +79,14 @@
 
       getSignature(location.href.split('#')[0]).then(res => {
         if (res.data && res.data.success) {
-          this.initWx(res.data.data)
+          if (!this.$route.params.brand && this.$route.params.brandId) {
+            getProjectById(this.$route.params.brandId).then(result => {
+              this.brand = result.data.data
+              this.initWx(res.data.data)
+            })
+          } else {
+            this.initWx(res.data.data)
+          }
         }
       })
     },

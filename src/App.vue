@@ -80,7 +80,9 @@ export default {
   methods: {
     jump (page) {
       this.$router.push({
-        name: page
+        name: page,
+        query: {},
+        params: {},
       })
     }
   },
@@ -97,14 +99,36 @@ export default {
 
     const storage = window.localStorage
     let code = ''
+    let router = ''
+    let state = ''
+    let brandId = ''
+    let brandIdInParams = ''
 
     if (window.location.search) {
-      code = window.location.search.split('=')[1]
+      const queries = window.location.search.slice(1).split('&')
+
+      queries.forEach(q => {
+        if (q.split('=')[0] === 'code') {
+          code = q.split('=')[1]
+        } else if (q.split('=')[0] === 'router') {
+          router = q.split('=')[1]
+        } else if (q.split('=')[0] === 'state') {
+          const tempState = q.split('=')[1]
+
+          if (tempState.split('%5E%5E').length > 1) {
+            state = tempState.split('%5E%5E')[0]
+            brandIdInParams = tempState.split('%5E%5E')[1]
+          } else {
+            state = tempState
+          }
+        } else if (q.split('=')[0] === 'brandId') {
+          brandId = q.split('=')[1]
+        }
+      })
     }
-    
-    
+  
     const openid = storage.getItem("vote-openid")
-    const authUrl = getCode()
+    const authUrl = getCode(router, brandId)
 
     if (!openid && !code) {
       // 前端没有openId和code, 跳转至授权页面，
@@ -114,15 +138,31 @@ export default {
       if (code) {
         // 在http.js里面写个post方法 把code传给后端，后端返回用户信息和openId
         // 拿到openid之后缓存在前端 storage.setItem('vote-openid', res.openId)
-        window.alert(`发送code给后端 ${code}`)
+        // window.alert(`发送code给后端 ${code}`)
+
+        if (state) {
+          this.$router.push({
+            name: state,
+            params: {
+              brandId: brandIdInParams
+            }
+          })
+        }
       } else {
         getProfile(openid).then(res => {
           console.log(res)
-          window.alert('auth')
-          window.alert(JSON.stringify(res))
+          // window.alert(JSON.stringify(res))
 
           // 这里需要判断成功还是失败， 失败就是过期，需要清除前端openid缓存,然后reload页面，自动去走授权了
         })
+        if (router) {
+          this.$router.push({
+            name: router,
+            params: {
+              brandId: brandId
+            }
+          })
+        }
       }
     }
     
