@@ -30,7 +30,15 @@ export function getSignature(url) {
 }
 
 export function getProfile(openid) {
-  return axios.post(`${URL}/wechatUser/${openid}`)
+  return axios.post(`${URL}/OauthUserByOpenid`, {
+    openid
+  })
+}
+
+export function getProfileByCode(code) {
+  return axios.post(`${URL}/OauthUserByCode`, {
+    code
+  })
 }
 
 export function getCode(router, brandId) {

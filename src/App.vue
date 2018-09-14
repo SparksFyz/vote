@@ -61,7 +61,8 @@
 import {
   getProjects,
   getCode,
-  getProfile
+  getProfile,
+  getProfileByCode,
 } from '@/http'
 import { longStackSupport } from 'q';
 
@@ -96,7 +97,7 @@ export default {
     //     opened.opener = null
     //     opened.close()
     // }
-
+    return
     const storage = window.localStorage
     let code = ''
     let router = ''
@@ -139,7 +140,11 @@ export default {
         // 在http.js里面写个post方法 把code传给后端，后端返回用户信息和openId
         // 拿到openid之后缓存在前端 storage.setItem('vote-openid', res.openId)
         // window.alert(`发送code给后端 ${code}`)
-
+        getProfileByCode(code).then(res => {
+          if (res.data && res.data.success) {
+            storage.setItem('vote-openid', res.data.data.openid)
+          }
+        })
         if (state) {
           this.$router.push({
             name: state,
@@ -151,6 +156,12 @@ export default {
       } else {
         getProfile(openid).then(res => {
           console.log(res)
+          if (res.data && res.data.success) {
+            storage.setItem('vote-openid', res.data.data.openid)
+          } else {
+            storage.removeItem('vote-openid')
+            window.location.href = "http://huwaicanju.com"
+          }
           // window.alert(JSON.stringify(res))
 
           // 这里需要判断成功还是失败， 失败就是过期，需要清除前端openid缓存,然后reload页面，自动去走授权了

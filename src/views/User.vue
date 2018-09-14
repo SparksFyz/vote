@@ -1,7 +1,8 @@
 <template>
   <div class="user">
-    <div class="user-header"></div>
-    <div class="user-name">User_Test</div>
+    <div class="user-header" v-bind:style="{backgroundImage:'url(' + avatar + ')'}">
+    </div>
+    <div class="user-name">{{username}}</div>
     <div class="img-box code"><img src="../assets/code.jpg" alt=""></div>
     <p>长按识别二维码</p>
     <p>获得更多资讯</p>
@@ -11,13 +12,17 @@
 <script>
 import wx from 'weixin-js-sdk'
 import {
-  getSignature
+  getSignature,
+  getProfile
 } from '@/http'
 
 export default {
   name: 'User',
   data () {
-    return {}
+    return {
+      username: '',
+      avatar: '',
+    }
   },
   methods: {
     initWx(config) {
@@ -59,6 +64,21 @@ export default {
     }
   },
   mounted() {
+    const storage = window.localStorage
+    const openid = storage.getItem("vote-openid")
+
+    if (openid) {
+      getProfile(openid).then(res => {
+        if (res.data && res.data.success) {
+          this.avatar = res.data.data.headimgurl
+          this.username = res.data.data.nickname
+        } else {
+          storage.removeItem('vote-openid')
+          window.location.href = "http://huwaicanju.com"
+        }
+      })
+    }
+
     getSignature(location.href.split('#')[0]).then(res => {
       if (res.data && res.data.success) {
         this.initWx(res.data.data)
