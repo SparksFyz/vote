@@ -97,7 +97,6 @@ export default {
     //     opened.opener = null
     //     opened.close()
     // }
-    return
     const storage = window.localStorage
     let code = ''
     let router = ''
@@ -130,30 +129,13 @@ export default {
   
     const openid = storage.getItem("vote-openid")
     const authUrl = getCode(router, brandId)
-
+    
     if (!openid && !code) {
       // 前端没有openId和code, 跳转至授权页面，
       // 点击确认授权之后会跳转回来， 上面的代码再执行一遍, code在url上，不会再进这个if
       window.location.href = authUrl
     } else {
-      if (code) {
-        // 在http.js里面写个post方法 把code传给后端，后端返回用户信息和openId
-        // 拿到openid之后缓存在前端 storage.setItem('vote-openid', res.openId)
-        // window.alert(`发送code给后端 ${code}`)
-        getProfileByCode(code).then(res => {
-          if (res.data && res.data.success) {
-            storage.setItem('vote-openid', res.data.data.openid)
-          }
-        })
-        if (state) {
-          this.$router.push({
-            name: state,
-            params: {
-              brandId: brandIdInParams
-            }
-          })
-        }
-      } else {
+      if (openid) {
         getProfile(openid).then(res => {
           console.log(res)
           if (res.data && res.data.success) {
@@ -171,6 +153,28 @@ export default {
             name: router,
             params: {
               brandId: brandId
+            }
+          })
+        }
+      } else {
+        // 在http.js里面写个post方法 把code传给后端，后端返回用户信息和openId
+        // 拿到openid之后缓存在前端 storage.setItem('vote-openid', res.openId)
+        // window.alert(`发送code给后端 ${code}`)
+        getProfileByCode(code).then(res => {
+          if (res.data && res.data.success) {
+            storage.setItem('vote-openid', res.data.data.openid)
+          } else {
+            window.location.href = "http://huwaicanju.com"
+          }
+        }, () => {
+          storage.setItem('vote-openid', res.data.data.openid)
+          window.location.href = "http://huwaicanju.com"
+        })
+        if (state) {
+          this.$router.push({
+            name: state,
+            params: {
+              brandId: brandIdInParams
             }
           })
         }
