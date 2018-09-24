@@ -6,17 +6,17 @@
     </div>
     <div class="vote-cell-info">
       <div class="photo">
-        <img :src="'http://huwaicanju.com/Wechat/user' + brand.pngUrl" :alt="brand.projectName"></div>
+        <img :src="'http://huwaicanju.com/' + brand.pngUrl" :alt="brand.projectName"></div>
       <div class="title">{{brand.projectName}}</div>
       <div class="vote-num"><span>{{brand.voteCount}}</span>票</div>
-      <mt-button size="small" type="danger">投票</mt-button>
+      <mt-button size="small" type="danger"  v-on:click.stop="vote(brand.projectId)">投票</mt-button>
     </div>
   </div>
 </template>
 
 <script>
 import {
-  getProjects,
+  getProjects,VoteForProject
 } from '@/http'
 export default {
   name: 'VoteCell',
@@ -30,10 +30,24 @@ export default {
     return {}
   },
   methods: {
-    vote () {
+    vote: function (projectId) {
+      const storage = window.localStorage
+      const openid = storage.getItem("vote-openid")
+      const data = {projectId:projectId,openId:openid}
+      VoteForProject(data).then(res => {
 
+        if(res.data.status == 0){
+          this.brand.message = "投票成功"
+        
+        }else if(res.data.status == 4049){
+          this.brand.message = "今天已经投过票啦！"
+        }else{
+          this.brand.message = "投票失败，请检查网络状况！"
+        }
+        
+        this.$emit('msgFunc',this.brand);
+      })
     },
-
     toDetail() {
       this.$router.push({
         name: 'brand',
@@ -42,7 +56,7 @@ export default {
         }
       })
     }
-  }
+  },
 }
 </script>
 <style lang="sass" scoped>

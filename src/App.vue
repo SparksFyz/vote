@@ -2,7 +2,7 @@
   <div id="app">
     <div v-show="showBanner">
       <div class="img-box">
-        <img src="./assets/share.png">
+        <img src="http://huwaicanju.com/img/resources/share.png">
       </div>
       <div class="info-box">
         <div>
@@ -103,7 +103,7 @@ export default {
     let state = ''
     let brandId = ''
     let brandIdInParams = ''
-
+    //  return
     if (window.location.search) {
       const queries = window.location.search.slice(1).split('&')
 

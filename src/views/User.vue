@@ -3,7 +3,7 @@
     <div class="user-header" v-bind:style="{backgroundImage:'url(' + avatar + ')'}">
     </div>
     <div class="user-name">{{username}}</div>
-    <div class="img-box code"><img src="../assets/code.jpg" alt=""></div>
+    <div class="img-box code"><img src="http://huwaicanju.com/img/resources/code.jpg" alt=""></div>
     <p>长按识别二维码</p>
     <p>获得更多资讯</p>
   </div>
@@ -114,6 +114,7 @@ export default {
       margin-bottom: 60px
       img
         width: 180px
+        height: 180px
     p
       color: #ccc
       font-size: 16px

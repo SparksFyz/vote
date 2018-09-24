@@ -9,7 +9,7 @@
         {{data.item.projectName}}
       </template>
       <template slot="vote" slot-scope="data">
-         <mt-button size="small" type="danger">投票</mt-button>
+         <mt-button size="small" type="danger" v-on:click="vote(data.item)">投票</mt-button>
       </template>
     </b-table>
   </div>
@@ -17,9 +17,11 @@
 
 <script>
 import bTable from 'bootstrap-vue/es/components/table/table'
+import VoteResult from '@/components/VoteResult.vue'
 import {
   getProjects,
-  getSignature
+  getSignature,
+  VoteForProject
 } from '@/http'
 import wx from 'weixin-js-sdk'
 
@@ -57,7 +59,6 @@ export default {
     fetchProjects() {
       getProjects().then(res => {
         this.datum = res.data.data
-        console.log(this.datum)
       })
     },
 
@@ -97,7 +98,34 @@ export default {
           },
         })
       })
-    }
+    },
+    showResult(val) {
+        this.$modal.show(VoteResult, {
+          text: val.message,
+          pngUrl: val.qrUrl,
+        },{
+          width: '90%',
+        },)
+      },
+      vote: function (item) {
+        const that = this
+        const storage = window.localStorage
+        const openid = storage.getItem("vote-openid")
+        const data = {projectId:item.projectId,openId:openid}
+        VoteForProject(data).then(res => {
+          if(res.data.status == 0){
+            item.message = "投票成功"
+            that.showResult(item)
+          }else if(res.data.status == 4049){
+            item.message = "今天已经投过票啦！"
+            that.showResult(item)
+          }else{
+            item.message = "投票失败，请检查网络状况！"
+            that.showResult(item)
+          }
+          
+        })
+      },
   },
   mounted() {
     getSignature(location.href.split('#')[0]).then(res => {

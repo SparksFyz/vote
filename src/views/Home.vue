@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <vote-cell v-for="brand in brands" :key="brand.name" :brand="brand">
+    <vote-cell v-for="brand in brands" :key="brand.name" :brand="brand" @msgFunc="showResult">
     </vote-cell>
     <div class="comment-box">
       <div class="title">添加评论</div>
@@ -11,8 +11,14 @@
       <div class="title">评论列表</div>
       <div class="notice">数据每十分钟定时更新一次</div>
     </div>
-    <modal name="modal" width="90%">
-      <img src="../assets/code.jpg" alt="">
+    <modal name="modal" width="90%" class="code-modal">
+      <div class="red">长按识别二维码</div>
+      
+      <img src="http://huwaicanju.com/img/resources/main.jpg" alt="">
+      <div class="red">关注每日排名动态</div>
+    </modal>
+    <modal name="result" width="90%">
+       <img :src="'http://huwaicanju.com/'">
     </modal>
   </div>
 </template>
@@ -21,6 +27,7 @@
 
 // @ is an alias to /src
 import VoteCell from '@/components/VoteCell.vue'
+import VoteResult from '@/components/VoteResult.vue'
 import {
   getProjects,
   getSignature
@@ -44,11 +51,19 @@ export default {
     fetchProjects() {
       getProjects().then(res => {
         this.brands = res.data.data
-        console.log(this.brands)
       })
     },
     showModal() {
       this.$modal.show('modal')
+    },
+    showResult(val) {
+      console.log(val)
+      this.$modal.show(VoteResult, {
+        text: val.message,
+        pngUrl: val.qrUrl,
+      },{
+        width: '90%',
+      },)
     },
     initWx(config) {
       wx.config({
@@ -86,7 +101,10 @@ export default {
           },
         })
       })
-    }
+    },
+    func (msg) {
+            console.log(msg);
+        }
   },
   mounted() {
     getSignature(location.href.split('#')[0]).then(res => {
@@ -105,7 +123,6 @@ export default {
     flex-wrap: wrap
     padding: 20px 10px 0
     background-color: #fbe7b5
-
   .vote-cell
     width: 48.5%
     margin-right: 3%
@@ -147,6 +164,8 @@ export default {
       width: 95%
       margin: 10px 0px
       color: #ccc
+  .modal-content
+    display:block
 </style>
 
 <style lang="sass">
@@ -161,4 +180,17 @@ export default {
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ 
     opacity: 0
 </style>
+
+<style lang="sass">
+  .v--modal-overlay 
+    background: rgba(0, 0, 0, 1) !important
+  
+  .code-modal
+    .red
+      color: red
+      font-weight: bold
+    .v--modal-box
+      flex-direction: column
+</style>
+
 

@@ -21,7 +21,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueScroller)
 Vue.use(Mint)
-Vue.use(vmodal)
+Vue.use(vmodal, { dynamic: true, injectModalsContainer: true })
 
 new Vue({
   router,

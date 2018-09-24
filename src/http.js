@@ -41,6 +41,11 @@ export function getProfileByCode(code) {
   })
 }
 
+export function VoteForProject(data) {
+  console.log(data)
+  return axios.post(`${URL}/vote`, data)
+}
+
 export function getCode(router, brandId) {
   const wexinUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?'
   const appId = 'wx59e7e11099c2c50f'

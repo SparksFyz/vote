@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="detail-header">
-       <img src="../assets/anfa.jpg" alt="">
-       <mt-button size="small" type="danger">投票</mt-button>
+       <img :src="'http://huwaicanju.com/' + brand.pngUrl" :alt="brand.projectName">
+       <mt-button size="small" type="danger" v-on:click="vote(brand.projectId)">投票</mt-button>
     </div>
     <div class="detail-info">
        <div class="detail-item"><span class="name">编号</span><span class="value">{{brand.projectId}}</span></div>
@@ -11,7 +11,7 @@
        <div class="detail-item"><span class="name">票数</span><span class="value" style="color:red">{{brand.voteCount}}</span></div>
     </div>
     <div class="detail-footer">
-       <img src="../assets/anfa.jpg" alt="">
+       <img :src="'http://huwaicanju.com/' + brand.qrUrl" :alt="brand.projectName">
     </div>
    
   </div>
@@ -20,9 +20,11 @@
 
 <script>
   import wx from 'weixin-js-sdk'
+  import VoteResult from '@/components/VoteResult.vue'
   import {
     getSignature,
-    getProjectById
+    getProjectById,
+    VoteForProject
   } from '@/http'
 
   export default {
@@ -72,7 +74,38 @@
             },
           })
         })
-      }
+      },
+      showResult(val) {
+        console.log(val)
+        this.$modal.show(VoteResult, {
+          text: val.message,
+          pngUrl: val.qrUrl,
+        },{
+          width: '90%',
+        },)
+      },
+      vote: function (projectId) {
+        const that = this
+        const storage = window.localStorage
+        const openid = storage.getItem("vote-openid")
+        const data = {projectId:projectId,openId:openid}
+        VoteForProject(data).then(res => {
+
+          if(res.data.status == 0){
+            this.brand.message = "投票成功"
+            that.showResult(this.brand)
+            
+          
+          }else if(res.data.status == 4049){
+            this.brand.message = "今天已经投过票啦！"
+            that.showResult(this.brand)
+          }else{
+            this.brand.message = "投票失败，请检查网络状况！"
+            that.showResult(this.brand)
+          }
+          
+        })
+      },
     },
     mounted() {
       this.brand = this.$route.params.brand || {}

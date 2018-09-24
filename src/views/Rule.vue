@@ -1,6 +1,6 @@
 <template>
   <div class="rule">
-      <div class="img-box"><img src="../assets/rule.png" alt=""></div>
+      <div class="img-box"><img src="http://huwaicanju.com/img/resources/code.jpg" alt=""></div>
       <div class="rule-detail">
         <p>活动时间：2018-08-01~2018-12-31</p>
         <p>本次活动主办方：【中直企评选组】</p>
@@ -12,7 +12,7 @@
         <p>请大家遵守投票规则</p>
         <p>一起维护此次规模宏大的投票活动的公平和公正！</p>
       </div>
-      <div class="img-box code"><img src="../assets/code.jpg" alt=""></div>
+      <div class="img-box code"><img src="http://huwaicanju.com/img/resources/main.jpg" alt=""></div>
 
   </div>
 </template>
