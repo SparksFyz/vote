@@ -3,7 +3,7 @@
     <div class="user-header" v-bind:style="{backgroundImage:'url(' + avatar + ')'}">
     </div>
     <div class="user-name">{{username}}</div>
-    <div class="img-box code"><img src="http://huwaicanju.com/img/resources/code.jpg" alt=""></div>
+    <div class="img-box code"><img src="http://huwaicanju.com/img/resources/code.jpg" title="二维码配图" alt="二维码配图"></div>
     <p>长按识别二维码</p>
     <p>获得更多资讯</p>
   </div>
@@ -44,7 +44,7 @@ export default {
           title: '2018最具影响力直销品牌评选',
           desc: '活动火爆进行中， 家人们赶紧投上宝贵的一票！',
           link: 'http://huwaicanju.com',
-          imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
+          imgUrl: protocol + '//' + host + '/img/resources/share.png',
           success: function () {
             // window.alert('分享成功')
           },
@@ -56,7 +56,7 @@ export default {
         wx.onMenuShareTimeline({
           title: '2018最具影响力直销品牌评选',
           link: 'http://huwaicanju.com',
-          imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
+          imgUrl: protocol + '//' + host + '/img/resources/share.png',
           success: function () {
           },
         })

@@ -57,7 +57,7 @@
             title: title,
             desc: '活动火爆进行中， 家人们赶紧投上宝贵的一票！',
             link: `http://huwaicanju.com/We1chat/brand?router=brand&brandId=${brandId}`,
-            imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
+            imgUrl: protocol + '//' + host + '/img/resources/share.png',
             success: function () {
               // window.alert('分享成功')
             },
@@ -69,7 +69,7 @@
           wx.onMenuShareTimeline({
             title: title,
             link: `http://huwaicanju.com/We1chat/brand?router=brand&brandId=${brandId}`,
-            imgUrl: protocol + '//' + host + '/Wechat/resources/share.png',
+            imgUrl: protocol + '//' + host + '/img/resources/share.png',
             success: function () {
             },
           })

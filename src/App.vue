@@ -89,14 +89,14 @@ export default {
   },
 
   mounted () {
-    // const useragent = navigator.userAgent
-    // if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
-    //     alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！')
-    //     // 以下代码是用javascript强行关闭当前页面
-    //     const opened = window.open('about:blank', '_self')
-    //     opened.opener = null
-    //     opened.close()
-    // }
+    const useragent = navigator.userAgent
+    if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+        alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！')
+        // 以下代码是用javascript强行关闭当前页面
+        const opened = window.open('about:blank', '_self')
+        opened.opener = null
+        opened.close()
+    }
     const storage = window.localStorage
     let code = ''
     let router = ''
